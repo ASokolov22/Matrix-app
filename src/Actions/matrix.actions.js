@@ -38,11 +38,13 @@ function setMatrix(rows, columns){
     //Set sum
     let rowSum = 0;
     let rowSumArray = [];
+    console.log('rowArray', rowArray);
     for (let r = 0; r < rowArray.length; r++){
         rowArray[r].map(item => {
             rowSum += item.value;
         });
         rowSumArray.push(rowSum);
+        rowSum = 0;
     }
 
     //Set average array

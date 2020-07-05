@@ -2,7 +2,7 @@ import {MatrixConstants} from '../Constants';
 
 const initialState = {
     columns: 5,
-    rows: 3,
+    rows: 1,
     matrix: [],
     rowSumArray: [],
     average: [],
