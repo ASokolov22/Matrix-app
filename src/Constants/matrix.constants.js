@@ -1,0 +1,5 @@
+export const MatrixConstants = {
+    HANDLE_INPUT_CHANGE: 'HANDLE_INPUT_CHANGE',
+    SET_MATRIX: 'SET_MATRIX',
+    ADD_ONE_ELEMENT: 'ADD_ONE_ELEMENT',
+};
