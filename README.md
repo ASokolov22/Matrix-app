@@ -1,3 +1,5 @@
+# Matrix-app
+React.js application to create dynamic tables using multidimensional arrays
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
