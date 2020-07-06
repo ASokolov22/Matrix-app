@@ -60,7 +60,8 @@ let Matrix = ({
     matrix,
     addOneElement,
     rowSumArray,
-    average
+    average,
+    addRow,
 }) => {
 
     const classes = useStyles();
@@ -72,6 +73,11 @@ let Matrix = ({
 
     const handleCellClick = (id) => {
         addOneElement(id, matrix, rowSumArray, rows, columns);
+    };
+
+    const handleAddRow = (event) => {
+        event.preventDefault();
+        addRow(matrix, columns, rowSumArray, average)
     };
 
     return (
@@ -131,6 +137,11 @@ let Matrix = ({
                         </TableRow>
                     </TableFooter>
                 </Table>
+                <Button
+                    className={classes.setBtn}
+                    onClick={handleAddRow}
+                >Add Row
+                </Button>
             </TableContainer>
         ) : null}
         </>
@@ -152,6 +163,7 @@ const mapDispatchToProps = {
     handleInputChange: matrixActions.handleInputChange,
     setMatrix: matrixActions.setMatrix,
     addOneElement: matrixActions.addOneElement,
+    addRow: matrixActions.addRow,
 };
 export const MatrixComponent = connect(
     mapStateToProps,

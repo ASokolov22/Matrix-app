@@ -4,6 +4,7 @@ export const matrixActions = {
     handleInputChange,
     setMatrix,
     addOneElement,
+    addRow,
 };
 function handleInputChange(event){
     return {
@@ -38,7 +39,6 @@ function setMatrix(rows, columns){
     //Set sum
     let rowSum = 0;
     let rowSumArray = [];
-    console.log('rowArray', rowArray);
     for (let r = 0; r < rowArray.length; r++){
         rowArray[r].map(item => {
             rowSum += item.value;
@@ -116,6 +116,44 @@ function addOneElement(id, matrix, rowSumArray, rows, columns){
             matrix,
             rowSumArray: rowSumArray,
             average,
+        }
+    }
+}
+
+function addRow(matrix, columns, rowSumArray, average){
+
+    let newRow = new Array(columns);
+    let lastId = function(matrix){
+        let arr = matrix[matrix.length - 1];
+        let result = arr[arr.length - 1].id;
+
+        return result;
+    };
+    let id = lastId(matrix) + 1;
+    for (let c = 0; c < newRow.length; c++){
+        newRow[c] = function(){
+            let rand = 100 + Math.random() * (999 + 1 - 100);
+            return {
+                id,
+                value: Math.floor(rand)
+            }
+        }();
+        id++;
+    }
+    matrix.push(newRow);
+
+    //Set sum
+    let rowSum = 0;
+    for (let r = 0; r < newRow.length; r++){
+        rowSum += newRow[r].value;
+    }
+    rowSumArray.push(rowSum);
+
+    return {
+        type: MatrixConstants.ADD_ROW,
+        payload: {
+            matrix,
+            rowSumArray,
         }
     }
 }

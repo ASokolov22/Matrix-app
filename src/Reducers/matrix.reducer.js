@@ -30,6 +30,13 @@ export function matrix(state = initialState, action){
                 average: action.payload.average,
             };
         }
+        case MatrixConstants.ADD_ROW: {
+            return {
+                ...state,
+                matrix: JSON.parse(JSON.stringify(action.payload.matrix)),
+                rowSumArray: action.payload.rowSumArray
+            }
+        }
         default:
             return state
     }
