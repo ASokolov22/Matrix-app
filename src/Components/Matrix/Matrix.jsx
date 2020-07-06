@@ -4,6 +4,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -49,12 +51,23 @@ const useStyles = makeStyles((theme: Theme) =>
         table: {
             minWidth: 650,
         },
+        smallColumn: {
+            width: '2rem',
+            backgroundColor: '#FAFAFA',
+        },
+        nearest: {
+            backgroundColor: '#9CFE8B',
+            transitionProperty: 'background',
+            transitionDuration: '0.5s',
+            transitionTimingFunction: 'ease',
+        }
     }),
 );
 
 let Matrix = ({
     columns,
     rows,
+    nearest,
     handleInputChange,
     setMatrix,
     matrix,
@@ -62,6 +75,9 @@ let Matrix = ({
     rowSumArray,
     average,
     addRow,
+    deleteRow,
+    findNearest,
+    nearestArray,
 }) => {
 
     const classes = useStyles();
@@ -77,7 +93,13 @@ let Matrix = ({
 
     const handleAddRow = (event) => {
         event.preventDefault();
-        addRow(matrix, columns, rowSumArray, average)
+        addRow(matrix, columns, rows, rowSumArray)
+    };
+
+    const showNearest = (element, nearestArray) => {
+        if(nearestArray.indexOf(element) !== -1){
+            return classes.nearest;
+        }
     };
 
     return (
@@ -100,6 +122,14 @@ let Matrix = ({
                         size="small"
                         className={classes.input}
                     />
+                    <TextField
+                        label="Nearest"
+                        onChange={handleInputChange}
+                        id="nearest"
+                        value={nearest}
+                        size="small"
+                        className={classes.input}
+                    />
                     <Button type="submit" className={classes.setBtn}>Submit
                     </Button>
                 </form>
@@ -110,8 +140,11 @@ let Matrix = ({
                     <TableHead>
                         <TableRow>
                             <TableCell colSpan={columns}/>
-                            <TableCell>
+                            <TableCell className={classes.smallColumn}>
                                 Quantity
+                            </TableCell>
+                            <TableCell className={classes.smallColumn}>
+                                Actions
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -121,11 +154,18 @@ let Matrix = ({
                                 {row.map(cell => (
                                     <TableCell
                                         key={cell.id}
+                                        className={showNearest(cell.value, nearestArray)}
                                         onClick={() => handleCellClick(cell.id)}
+                                        onMouseOver={() => findNearest(matrix, nearest, cell.value)}
                                     >{cell.value}
                                     </TableCell>
                                 ))}
-                                <TableCell>{rowSumArray[i]}</TableCell>
+                                <TableCell className={classes.smallColumn}>
+                                    {rowSumArray[i]}
+                                </TableCell>
+                                <TableCell className={classes.smallColumn}>
+                                    <DeleteIcon onClick={() => deleteRow(matrix, i, rowSumArray, columns, rows)}/>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
@@ -149,14 +189,16 @@ let Matrix = ({
 };
 
 const mapStateToProps = (state) => {
-    const {columns, rows, matrix, rowSumArray, average} = state.matrix;
+    const {columns, rows, nearest, matrix, rowSumArray, average, nearestArray} = state.matrix;
 
     return {
         columns,
         rows,
+        nearest,
         matrix,
         rowSumArray,
         average,
+        nearestArray,
     }
 };
 const mapDispatchToProps = {
@@ -164,6 +206,8 @@ const mapDispatchToProps = {
     setMatrix: matrixActions.setMatrix,
     addOneElement: matrixActions.addOneElement,
     addRow: matrixActions.addRow,
+    deleteRow: matrixActions.deleteRow,
+    findNearest: matrixActions.findNearest,
 };
 export const MatrixComponent = connect(
     mapStateToProps,

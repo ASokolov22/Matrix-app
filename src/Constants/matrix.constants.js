@@ -3,4 +3,6 @@ export const MatrixConstants = {
     SET_MATRIX: 'SET_MATRIX',
     ADD_ONE_ELEMENT: 'ADD_ONE_ELEMENT',
     ADD_ROW: 'ADD_ROW',
+    DELETE_ROW: 'DELETE_ROW',
+    FIND_NEAREST: 'FIND_NEAREST',
 };

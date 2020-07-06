@@ -5,6 +5,8 @@ export const matrixActions = {
     setMatrix,
     addOneElement,
     addRow,
+    deleteRow,
+    findNearest,
 };
 function handleInputChange(event){
     return {
@@ -120,7 +122,7 @@ function addOneElement(id, matrix, rowSumArray, rows, columns){
     }
 }
 
-function addRow(matrix, columns, rowSumArray, average){
+function addRow(matrix, columns, rows, rowSumArray){
 
     let newRow = new Array(columns);
     let lastId = function(matrix){
@@ -149,11 +151,93 @@ function addRow(matrix, columns, rowSumArray, average){
     }
     rowSumArray.push(rowSum);
 
+    //Set average array
+    let columnArray = new Array(columns);
+    for(let i = 0; i < columnArray.length; i++){
+        columnArray[i] = new Array(rows);
+    }
+    for(let a = 0; a < columnArray.length; a++){
+        for(let b = 0; b < matrix.length; b++){
+            columnArray[a][b] = matrix[b][a].value;
+        }
+    }
+
+    let average = [];
+    columnArray.forEach(arr => {
+        let sum = 0;
+        for(let i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+        average.push((sum / arr.length).toFixed(1));
+        return sum / arr.length;
+    });
+
     return {
         type: MatrixConstants.ADD_ROW,
         payload: {
             matrix,
             rowSumArray,
+            average,
+        }
+    }
+}
+
+function deleteRow(matrix, index, rowSumArray, columns, rows){
+    matrix.splice(index, 1);
+    rowSumArray.splice(index, 1);
+
+    //Set average array
+    let columnArray = new Array(columns);
+    for(let i = 0; i < columnArray.length; i++){
+        columnArray[i] = new Array(rows);
+    }
+    for(let a = 0; a < columnArray.length; a++){
+        for(let b = 0; b < matrix.length; b++){
+            columnArray[a][b] = matrix[b][a].value;
+        }
+    }
+
+    let average = [];
+    columnArray.forEach(arr => {
+        let sum = 0;
+        for(let i = 0; i < arr.length; i++) {
+            if(arr[i]){
+                sum += arr[i];
+            }
+        }
+        average.push((sum / (arr.length - 1)).toFixed(1));
+        return sum / arr.length;
+    });
+
+    return {
+        type: MatrixConstants.DELETE_ROW,
+        payload: {
+            matrix,
+            rowSumArray,
+            average
+        }
+    }
+}
+
+function findNearest(matrix, nearest, value){
+    let arr = [];
+    for(let a = 0; a < matrix.length; a++){
+        for(let b = 0; b < matrix[a].length; b++){
+            arr.push((matrix[a][b].value));
+        };
+    }
+    const diff = arr.map(item => {
+        return { id: item, diff: Math.abs(+item - +value) };
+    });
+
+    diff.sort((a, b) => a.diff - b.diff);
+
+    const nearestArray = diff.slice(0, nearest).map(item => item.id).sort();
+
+    return {
+        type: MatrixConstants.FIND_NEAREST,
+        payload: {
+            nearestArray
         }
     }
 }
