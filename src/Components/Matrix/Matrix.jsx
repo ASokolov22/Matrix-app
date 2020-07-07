@@ -78,6 +78,7 @@ let Matrix = ({
     deleteRow,
     findNearest,
     nearestArray,
+    removeNearest,
 }) => {
 
     const classes = useStyles();
@@ -148,7 +149,9 @@ let Matrix = ({
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody
+                        onMouseOut={removeNearest}
+                    >
                         {matrix.map((row, i) => (
                             <TableRow key={row[0].id}>
                                 {row.map(cell => (
@@ -164,7 +167,7 @@ let Matrix = ({
                                     {rowSumArray[i]}
                                 </TableCell>
                                 <TableCell className={classes.smallColumn}>
-                                    <DeleteIcon onClick={() => deleteRow(matrix, i, rowSumArray, columns, rows)}/>
+                                    <DeleteIcon onClick={() => deleteRow(matrix, i, rowSumArray)}/>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -208,6 +211,7 @@ const mapDispatchToProps = {
     addRow: matrixActions.addRow,
     deleteRow: matrixActions.deleteRow,
     findNearest: matrixActions.findNearest,
+    removeNearest: matrixActions.removeNearest,
 };
 export const MatrixComponent = connect(
     mapStateToProps,

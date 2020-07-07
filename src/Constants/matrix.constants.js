@@ -5,4 +5,5 @@ export const MatrixConstants = {
     ADD_ROW: 'ADD_ROW',
     DELETE_ROW: 'DELETE_ROW',
     FIND_NEAREST: 'FIND_NEAREST',
+    REMOVE_NEAREST: 'REMOVE_NEAREST',
 };

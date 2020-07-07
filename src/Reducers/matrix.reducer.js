@@ -40,6 +40,7 @@ export function matrix(state = initialState, action){
                 rowSumArray: action.payload.rowSumArray,
                 average: action.payload.average,
                 nearestArray: [],
+                rows: action.payload.matrix.length,
             }
         }
         case MatrixConstants.DELETE_ROW:
@@ -47,7 +48,7 @@ export function matrix(state = initialState, action){
                 ...state,
                 matrix: JSON.parse(JSON.stringify(action.payload.matrix)),
                 rowSumArray: action.payload.rowSumArray,
-                rows: state.rows - 1,
+                rows: action.payload.matrix.length,
                 average: action.payload.average,
                 nearestArray: [],
             };
@@ -55,6 +56,11 @@ export function matrix(state = initialState, action){
             return {
                 ...state,
                 nearestArray: action.payload.nearestArray,
+            };
+        case MatrixConstants.REMOVE_NEAREST:
+            return {
+                ...state,
+                nearestArray: []
             };
         default:
             return state
