@@ -7,7 +7,9 @@ const initialState = {
     matrix: [],
     rowSumArray: [],
     average: [],
+    percentIndex: '',
     nearestArray: [],
+    percentArr: [],
 };
 
 export function matrix(state = initialState, action){
@@ -61,6 +63,18 @@ export function matrix(state = initialState, action){
             return {
                 ...state,
                 nearestArray: []
+            };
+        case MatrixConstants.SHOW_PERCENT:
+            return{
+                ...state,
+                percentIndex: +action.payload.percentIndex,
+                percentArr: action.payload.percentArr
+            };
+        case MatrixConstants.DELETE_PERCENT:
+            return {
+                ...state,
+                percentIndex: '',
+                percentArr: [],
             };
         default:
             return state

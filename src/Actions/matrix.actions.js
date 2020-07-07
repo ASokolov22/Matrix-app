@@ -8,6 +8,8 @@ export const matrixActions = {
     deleteRow,
     findNearest,
     removeNearest,
+    showPercent,
+    deletePercent,
 };
 function handleInputChange(event){
     return {
@@ -236,7 +238,7 @@ function findNearest(matrix, nearest, value){
     for(let a = 0; a < matrix.length; a++){
         for(let b = 0; b < matrix[a].length; b++){
             arr.push((matrix[a][b].value));
-        };
+        }
     }
     const diff = arr.map(item => {
         return { id: item, diff: Math.abs(+item - +value) };
@@ -257,6 +259,26 @@ function findNearest(matrix, nearest, value){
 function removeNearest(){
     return {
         type: MatrixConstants.REMOVE_NEAREST,
+        payload: {}
+    }
+}
+
+function showPercent(matrix, i, sum){
+    let percentArr = matrix[i].map(item => (
+        item.value / sum * 100).toFixed(1) + '%'
+    );
+    return {
+        type: MatrixConstants.SHOW_PERCENT,
+        payload: {
+            percentArr,
+            percentIndex: i
+        }
+    }
+}
+
+function deletePercent(){
+    return {
+        type: MatrixConstants.DELETE_PERCENT,
         payload: {}
     }
 }

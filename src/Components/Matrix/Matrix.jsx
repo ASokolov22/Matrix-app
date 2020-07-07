@@ -79,6 +79,10 @@ let Matrix = ({
     findNearest,
     nearestArray,
     removeNearest,
+    showPercent,
+    deletePercent,
+    percentArr,
+    percentIndex,
 }) => {
 
     const classes = useStyles();
@@ -154,16 +158,21 @@ let Matrix = ({
                     >
                         {matrix.map((row, i) => (
                             <TableRow key={row[0].id}>
-                                {row.map(cell => (
+                                {row.map((cell, index) => (
                                     <TableCell
                                         key={cell.id}
                                         className={showNearest(cell.value, nearestArray)}
                                         onClick={() => handleCellClick(cell.id)}
                                         onMouseOver={() => findNearest(matrix, nearest, cell.value)}
-                                    >{cell.value}
+                                    >
+                                        {(i === percentIndex) ? percentArr[index] : cell.value}
                                     </TableCell>
                                 ))}
-                                <TableCell className={classes.smallColumn}>
+                                <TableCell
+                                    onMouseOver={() => showPercent(matrix, i, rowSumArray[i])}
+                                    onMouseOut = {deletePercent}
+                                    className={classes.smallColumn}
+                                >
                                     {rowSumArray[i]}
                                 </TableCell>
                                 <TableCell className={classes.smallColumn}>
@@ -192,7 +201,17 @@ let Matrix = ({
 };
 
 const mapStateToProps = (state) => {
-    const {columns, rows, nearest, matrix, rowSumArray, average, nearestArray} = state.matrix;
+    const {
+        columns,
+        rows,
+        nearest,
+        matrix,
+        rowSumArray,
+        average,
+        nearestArray,
+        percentArr,
+        percentIndex
+    } = state.matrix;
 
     return {
         columns,
@@ -202,6 +221,8 @@ const mapStateToProps = (state) => {
         rowSumArray,
         average,
         nearestArray,
+        percentArr,
+        percentIndex,
     }
 };
 const mapDispatchToProps = {
@@ -212,6 +233,8 @@ const mapDispatchToProps = {
     deleteRow: matrixActions.deleteRow,
     findNearest: matrixActions.findNearest,
     removeNearest: matrixActions.removeNearest,
+    showPercent: matrixActions.showPercent,
+    deletePercent: matrixActions.deletePercent,
 };
 export const MatrixComponent = connect(
     mapStateToProps,
