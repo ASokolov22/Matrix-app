@@ -213,7 +213,9 @@ let Matrix = ({
                     <TableFooter>
                         <TableRow>
                             {average.map(item => (
-                                <TableCell>{item}</TableCell>
+                                <TableCell
+                                    key={item}
+                                >{item}</TableCell>
                             ))}
                         </TableRow>
                     </TableFooter>
