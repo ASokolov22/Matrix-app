@@ -60,6 +60,16 @@ const useStyles = makeStyles((theme: Theme) =>
             transitionProperty: 'background',
             transitionDuration: '0.5s',
             transitionTimingFunction: 'ease',
+        },
+        progress: {
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            bottom: '0',
+            right: '0',
+            padding: '16px',
+            // backgroundColor: '#9CFE8B',
+            backgroundColor: '#fff',
         }
     }),
 );
@@ -135,7 +145,11 @@ let Matrix = ({
                         size="small"
                         className={classes.input}
                     />
-                    <Button type="submit" className={classes.setBtn}>Submit
+                    <Button
+                        type="submit"
+                        className={classes.setBtn}
+                        disabled={columns < 1 || rows < 1}
+                    >Submit
                     </Button>
                 </form>
             </AppBar>
@@ -161,11 +175,26 @@ let Matrix = ({
                                 {row.map((cell, index) => (
                                     <TableCell
                                         key={cell.id}
+                                        style={{
+                                            position: 'relative'
+                                        }}
                                         className={showNearest(cell.value, nearestArray)}
                                         onClick={() => handleCellClick(cell.id)}
                                         onMouseOver={() => findNearest(matrix, nearest, cell.value)}
                                     >
                                         {(i === percentIndex) ? percentArr[index] : cell.value}
+                                        <div
+                                            style = {{
+                                                position: 'absolute',
+                                                left: '0',
+                                                top: '0',
+                                                bottom: '0',
+                                                width: (i === percentIndex) ? percentArr[index] : '0px',
+                                                padding: '16px',
+                                                backgroundColor: (i === percentIndex) ? '#9CFE8B' :'#fff',
+                                                opacity: (i === percentIndex) ? '0.5' : '0'
+                                            }}
+                                        />
                                     </TableCell>
                                 ))}
                                 <TableCell
